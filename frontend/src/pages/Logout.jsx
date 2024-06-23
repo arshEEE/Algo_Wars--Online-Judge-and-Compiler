@@ -1,48 +1,43 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-
 function Logout() {
-const[load,SetLoad] = useState(false);
-const navigate = useNavigate();
-  useEffect(()=>{
-    SetLoad(true)
-    const logoutUser= async()=>{
-     await axios.get(`http://localhost:5000/user/logout`)
-      .then((res) =>{
-        if(res.data==="Unauthorised Request"){
-          navigate("/login")
-         }
-         else{
-        SetLoad(false);
-        
-       console.log(res.data);
-         }
-      })
-      .catch((error)=>{
-        SetLoad(false);
-        console.log(error)
-      })
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-    }
-    
+  useEffect(() => {
+    const logoutUser = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/user/logout`,{withCredentials:true});
+        if (res.data === "Unauthorised Request") {
+          navigate("/");
+        } else {
+          setLoading(false);
+        }
+      } catch (error) {
+        setLoading(false);
+        console.error("Logout error:", error);
+      }
+    };
+
     logoutUser();
-
-  },[])
-
-
+  }, [navigate]);
 
   return (
-    <div>
-        <h1 className=' text-4xl font-bold text-white text-center mt-20 mb-40'>You have sucessfully logged out!!</h1>
-       
-        <p className='text-2xl text-center text-white ml-auto mr-auto'> <span className='text-blue-400 cursor-pointer'><a href='/'>  Log in</a></span> again to continue solving questions!!</p>
-        
-        <h1 className='text-center mt-40 text-5xl text-green-500 font-bold'>_Code_wars</h1>
-       
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
+      {loading ? (
+        <p className="text-3xl font-bold mb-6">Logging out...</p>
+      ) : (
+        <>
+          <p className="text-4xl font-bold mb-6">You have been successfully logged out!</p>
+          <p className="text-xl mb-12">Thank you for using<span className='font-semibold text-2xl text-green-600'> Algo_wars</span>. Log in again to continue.</p>
+          <a href="/login" className="text-blue-400 hover:underline  text-3xl">Log in</a>
+        </>
+      )}
     </div>
-  )
+  );
 }
 
-export default Logout
+export default Logout;

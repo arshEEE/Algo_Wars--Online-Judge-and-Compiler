@@ -21,10 +21,12 @@ const auth = async(req,res, next) => {
 
             
             
-            return res.status(401).json({message:"Invalid acess token"})
+            return res.status(401).json({message:"Invalid acess token"}) 
         }
-    
+       // console.log("yolo")
         req.user = user;
+        //req.user.id=user.id
+       // console.log(req.user)
         next()
 
     } catch (error) {

@@ -1,97 +1,147 @@
-import React, { useState } from 'react'
-import {useForm} from "react-hook-form"
-import axios from "axios"
-import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import Navbar_admin from '../components/Navbar_admin';
 
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Navbar_admin from '../components/Navbar_admin';
+import Footer from '../components/Footer';
 
 function CreateProblem() {
-  const{
-    register,
-    handleSubmit,
-    
-    formState:{errors},
-  }=useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
-
-//   const [isadmin , setAdmin]=useState(false);
+  const [profilePicture, setProfilePicture] = useState('');
+  useEffect(() => {
+    //setLoad(true);
+    const getUser = async () => {
+      try {
+        const res = await axios.get('http://localhost:5000/user', { withCredentials: true });
+        if (res.data === "Unauthorised Request") {
+          navigate("/");
+        } else {
+          // setLoad(false);
+          
+          setProfilePicture(res.data.user[0].profilePicture || '');
+        }
+      } catch (error) {
+        setLoad(false);
+        console.log(error);
+      }
+    };
+    getUser();
+   // console.log(user,profilePicture)
+  }, []);
 
   const onSubmit = async (data) => {
-    const probInfo={
-      name:data.name,
-      description:data.description,
-      difficulty:data.difficulty,
-      input:data.input,
-      output:data.output,
-      timec:data.timec,
-    }
-    await axios.post("http://localhost:5000/problem/create",probInfo,{withCredentials:true})
-    .then((res)=>{
-    //   console.log(res.data)
-      if(res.data){
-        alert("Problem Added Successfully")
+    const probInfo = {
+      name: data.name,
+      description: data.description,
+      difficulty: data.difficulty,
+      input: data.input,
+      output: data.output,
+      timec: parseInt(data.timec),
+    };
 
-          navigate(`/getproblem/${res.data.problem._id}`)
-          console.log(res.data.problem._id)
+    try {
+      const res = await axios.post("http://localhost:5000/problem/create", probInfo, { withCredentials: true });
+      if (res.data) {
+        alert("Problem Added Successfully");
+        navigate(`/getproblem/${res.data.problem._id}`);
       }
-
-    }).catch((err)=>{
-     if(err.response){
-      console.log(err.response.data);
-      alert("Error: "+err.response.data.message)
-     }
-    })
-  }
+    } catch (err) {
+      if (err.response) {
+        console.log(err.response.data);
+        alert("Error: " + err.response.data.message);
+      }
+    }
+  };
 
   return (
     <>
-    <Navbar_admin/>
-    
-    <div className='items-center justify-center'>
-    <h1 className='  mx-5 text-3xl mt-10  text-white'>
-      Add:
-    </h1>
-    <div className="signup-box   items-center w-2/3  ml-auto mr-auto p-5 border-radius-5 rounded-md ">
-   
-    <form onSubmit={handleSubmit(onSubmit)}>
-        <label className='text-white '>Name : </label>
-        {errors.name && <span className='text-red-400'>This field is required.</span>}
-       <input type="text"  {...register("name",{required:true})} className='w-full px-2  rounded-md bg-white cursor-pointer h-7 text-black click:bold' placeholder=""></input>
-       
-       <label className='text-white '>Difficulty : </label>
-        {errors.difficulty && <span className='text-red-400'>This field is required.</span>}
-       <input type="text"  {...register("difficulty",{required:true})} className='w-full px-2 rounded-md bg-white cursor-pointer h-7 text-black click:bold' placeholder=""></input>
-       
-       
-      
-       <label className='text-white '>Time constraint (In seconds) : </label>
-        {errors.timec && <span className='text-red-400'>This field is required.</span>}
-       <input type="number" {...register("timec",{required:true})} className='w-full px-2 rounded-md bg-white cursor-pointer h-7 text-black click:bold-black' placeholder=""></input>
-       
-       <label className='text-white '>Description: </label>
-        {errors.description && <span className='text-red-400'>This field is required.</span>}
-        <textarea type="text" {...register("description",{required:true})} className=" w-full h-1/2 bg-white textarea textarea-bordered text-black click:bold" ></textarea>
-         <h1 className='text-white mt-5 text-2xl'>Test cases :</h1>
-        <label className='text-white '>Input: </label>
-        <textarea type="text" {...register("input",{required:true})} className=" w-full h-1/2 bg-white textarea textarea-bordered text-black click:bold" ></textarea>
+      <Navbar_admin profilePicture={profilePicture} />
 
-        <label className='text-white '>Output: </label>
-        <textarea type="text" {...register("output",{required:true})} className=" w-full h-1/2 bg-white textarea textarea-bordered text-black click:bold" ></textarea>
+      <div className='flex items-center justify-center'>
+        <h1 className='text-3xl mt-10 mb-5 text-white'>
+          Add Problem
+        </h1>
+      </div>
 
-       <input type="submit" className='bg-white text-black text-2xl  hover:bg-green-500 w-full rounded-md mt-5 h-9 mb-2' value="Submit"></input>
+      <div className="w-full max-w-2xl mx-auto p-8 bg-gray-800 rounded-md shadow-lg">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <div className="flex flex-wrap mb-4">
+            <div className="w-full md:w-1/2 px-3">
+              <label className='text-white block'>Name:</label>
+              <input
+                type="text"
+                {...register("name", { required: true })}
+                className='w-full px-3 py-2 rounded-md bg-white text-gray-800 focus:outline-none focus:bg-gray-100'
+                placeholder="Enter problem name"
+              />
+              {errors.name && <span className='text-red-400'>This field is required.</span>}
+            </div>
+            <div className="w-full md:w-1/2 px-3">
+              <label className='text-white block'>Difficulty:</label>
+              <input
+                type="text"
+                {...register("difficulty", { required: true })}
+                className='w-full px-3 py-2 rounded-md bg-white text-gray-800 focus:outline-none focus:bg-gray-100'
+                placeholder="Enter difficulty (easy, medium, hard)"
+              />
+              {errors.difficulty && <span className='text-red-400'>This field is required.</span>}
+            </div>
+          </div>
 
+          <div className="mb-4">
+            <label className='text-white block'>Time constraint (In seconds):</label>
+            <input
+              type="number"
+              {...register("timec", { required: true })}
+              className='w-full px-3 py-2 rounded-md bg-white text-gray-800 focus:outline-none focus:bg-gray-100'
+              placeholder="Enter time constraint"
+            />
+            {errors.timec && <span className='text-red-400'>This field is required.</span>}
+          </div>
 
-    </form>
+          <div className="mb-4">
+            <label className='text-white block'>Description:</label>
+            <textarea
+              {...register("description", { required: true })}
+              className="w-full h-40 px-3 py-2 rounded-md bg-white text-gray-800 focus:outline-none focus:bg-gray-100"
+              placeholder="Enter problem description"
+            />
+            {errors.description && <span className='text-red-400'>This field is required.</span>}
+          </div>
 
-    </div>
-    </div>
-    <Footer/>
+          <div className="mb-4">
+            <h2 className='text-white text-2xl'>Test cases:</h2>
+
+            <label className='text-white block'>Input:</label>
+            <textarea
+              {...register("input", { required: true })}
+              className="w-full h-40 px-3 py-2 rounded-md bg-white text-gray-800 focus:outline-none focus:bg-gray-100"
+              placeholder="Enter test case inputs"
+            />
+            {errors.input && <span className='text-red-400'>This field is required.</span>}
+
+            <label className='text-white block mt-4'>Output:</label>
+            <textarea
+              {...register("output", { required: true })}
+              className="w-full h-40 px-3 py-2 rounded-md bg-white text-gray-800 focus:outline-none focus:bg-gray-100"
+              placeholder="Enter expected outputs"
+            />
+            {errors.output && <span className='text-red-400'>This field is required.</span>}
+          </div>
+
+          <input
+            type="submit"
+            className='bg-white text-black text-2xl hover:bg-green-500 w-full py-2 rounded-md'
+            value="Submit"
+          />
+        </form>
+      </div>
+
+      <Footer />
     </>
-    
-     
-  )
+  );
 }
 
-export default CreateProblem
+export default CreateProblem;

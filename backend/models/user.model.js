@@ -28,6 +28,10 @@ password:{
 isadmin:{
     type: Boolean,
     default:false,
+},
+profilePicture: { 
+    type: String ,
+    default:null
 }
 
 

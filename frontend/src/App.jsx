@@ -13,6 +13,8 @@ import Editprofile from "./pages/Editprofile";
 import CreateProblem from "./pages/createproblem";
 import EditProblem from "./pages/editproblem";
 import Subpage from "./pages/Subpage";
+import Main from "./pages/Main";
+import AdminCont from "./pages/AdminCont";
 
 
 function App() {
@@ -25,14 +27,18 @@ function App() {
       <Route path="/home" element={<Home/>}/>
       <Route path="/getproblem/:id" element={<Questpage/>}/>
       <Route path="/logout" element={<Logout/>}/>
-      <Route path="/" element={<Login/>}/>
+      <Route path="/login" element={<Login/>}/>
       <Route path="/register" element={<Register/>}/>
       <Route path="/profile" element={<Profile/>}/>
       <Route path="/profile/edit" element={<Editprofile/>}/>
       <Route path="/createproblem" element={<CreateProblem/>}/>
       <Route path="/editproblem/:id" element={<EditProblem/>}/>
 
+      <Route path="/admin" element={<AdminCont/>}/>
+
+
       <Route path="/getsub/:id" element={<Subpage/>}/>
+      <Route path="/" element={<Main/>}/>
 
       <Route path="/sub" element={<Submission/>}/>
 

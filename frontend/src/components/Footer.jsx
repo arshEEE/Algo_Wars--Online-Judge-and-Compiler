@@ -1,16 +1,15 @@
-import React from 'react'
+import React from 'react';
 
 function Footer() {
   return (
-    <div className='mb-auto'>
-          <footer className=" bg-black h-10  text-center p-1 bottom-0">
-  
-  <p>Copyright © 2024 - All right reserved by _Code_wars</p>
-
-</footer>
-    </div>
-  
-  )
+    <footer className="bg-gray-800 text-gray-300 p-4 mt-auto">
+      <div className="container mx-auto text-center">
+        <p className="text-sm">
+          &copy; 2024 - All rights reserved by _Code_wars
+        </p>
+      </div>
+    </footer>
+  );
 }
 
-export default Footer
+export default Footer;

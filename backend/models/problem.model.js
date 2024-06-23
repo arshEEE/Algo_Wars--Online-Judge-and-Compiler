@@ -1,4 +1,4 @@
-import mongoose from'mongoose';
+import mongoose,{Schema} from'mongoose';
 
 const problemSchema = new mongoose.Schema({
 
@@ -10,7 +10,7 @@ const problemSchema = new mongoose.Schema({
     },
 
     input:{
-     type : [ ]
+     type : []
     },
 
     output :{
@@ -18,14 +18,27 @@ const problemSchema = new mongoose.Schema({
     },
 
     timec :{
-      type : Number,
-      default:10
+      type : Number, 
+      default:10  
     }
     ,
     difficulty :{
       type:String,
-      default:"Easy"
-    }
+      default:"Easy" 
+    },
+    memoryc:{
+      type:Number,
+      default:256
+    },
+    tag: {
+      type: [String],
+      default: []
+  }, 
+//   testcases: {
+//     type: [Schema.Types.Mixed],
+//     default: []
+// },
+
 
 })
 

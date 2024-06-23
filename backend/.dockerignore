@@ -1,0 +1,14 @@
+# Node modules
+node_modules
+
+
+
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+
+# IDEs
+.vscode
+

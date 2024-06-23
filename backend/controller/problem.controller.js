@@ -51,9 +51,10 @@ export const getProblem =  async(req, res) => {
     //  return res.json({Message:"no"})
     // }
     const isadmin = req.user.isadmin
+    const userid =req.user._id
 
     const problem = await Problem.findById({_id});
-    return res.status(201).json({message : "problem fetched sucessfully", problem,isadmin});
+    return res.status(201).json({message : "problem fetched sucessfully", problem,isadmin,userid});
 };
 
 export const getProblems = async(req,res)=>{

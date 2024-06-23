@@ -1,0 +1,8 @@
+FROM node:alpine3.19
+WORKDIR /app
+RUN apk udate && apk add --no-cache g++
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 5000
+CMD npm run start

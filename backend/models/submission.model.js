@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const subSchema = new mongoose.Schema({
 
-    problem_name:{
+ problem_name:{
    type: String
     },
 
@@ -19,6 +19,18 @@ verdict:{
 },
 code:{
   type : String
+},
+submissionTime: {
+    type: Date,
+    default: Date.now
+},
+timeTaken: {
+    type: Number,
+    default: 0
+},
+memoryUsed: {
+    type: Number,
+    default: 0
 }
 
 }
