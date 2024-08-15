@@ -77,7 +77,7 @@ To set up the Algo_Wars platform locally, follow these steps:
    ```
 
    The frontend should now be running at `http://localhost:5173`.
-   The frontend should now be running at `http://localhost:5000`.
+   The backend should now be running at `http://localhost:5000`.
 
 
 
