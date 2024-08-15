@@ -57,7 +57,7 @@ To set up the Algo_Wars platform locally, follow these steps:
    Create a `.env` file in the root directory and specify the necessary environment variables:
 
    ```bash
-   MONGO_URI=mongodb:(URL of your MongoDB database,It can either be you local database or you can you MongoDB Atlas)
+   MONGO_URI=mongodb:(URL of your MongoDB database,It can either be you local database or you can use MongoDB Atlas)
    JWT_SECRET=your_jwt_secret
    PORT=5000
    ```
